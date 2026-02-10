@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Hero - Rhythm Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #98D8C8 50%, #90EE90 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow:
+                3px 3px 0px #FF6B35,
+                6px 6px 0px #D45525,
+                2px 2px 10px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            transform: rotate(-2deg);
+            animation: wiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        .game-info {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFEB99 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #8B4513;
+            box-shadow:
+                0 8px 0 #654321,
+                0 8px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+
+        .info-card::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 2px solid rgba(139, 69, 19, 0.3);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #654321;
+            margin-bottom: 0.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #2C1810;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .score.positive {
+            color: #4ade80;
+        }
+
+        .score.negative {
+            color: #f87171;
+        }
+
+        .fretboard-container {
+            background: linear-gradient(135deg, #8B6F47 0%, #A0826D 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            border: 5px solid #654321;
+            box-shadow:
+                0 10px 0 #4A2511,
+                0 10px 20px rgba(0, 0, 0, 0.4),
+                inset 0 3px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .fretboard {
+            position: relative;
+            background: linear-gradient(to right, #8B5A2B 0%, #A0826D 50%, #8B5A2B 100%);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 900px;
+            margin: 0 auto;
+            border: 3px solid #654321;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .strings-container {
+            position: relative;
+        }
+
+        .string {
+            position: relative;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .string-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #e0e0e0;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .string:nth-child(1) .string-line { height: 1px; }
+        .string:nth-child(2) .string-line { height: 1.5px; }
+        .string:nth-child(3) .string-line { height: 2px; }
+        .string:nth-child(4) .string-line { height: 2.5px; }
+        .string:nth-child(5) .string-line { height: 3px; }
+        .string:nth-child(6) .string-line { height: 3.5px; }
+
+        .string-label {
+            position: absolute;
+            left: -40px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            z-index: 10;
+        }
+
+        .frets {
+            display: flex;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .fret {
+            flex: 1;
+            height: 40px;
+            border-right: 3px solid #666;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frets::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            background: #222;
+            z-index: 5;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .fret.nut {
+            flex: 0 0 8px;
+            border-right: none;
+            background: transparent;
+            position: relative;
+            z-index: 15;
+        }
+
+        .fret.nut .note-dot {
+            z-index: 20;
+        }
+
+        .fret-number {
+            position: absolute;
+            bottom: -30px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .note-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: transparent;
+            position: relative;
+            z-index: 5;
+            transition: all 0.2s ease;
+        }
+
+        .note-dot.target {
+            background: radial-gradient(circle, #FFD700 0%, #FFA500 100%);
+            box-shadow:
+                0 0 20px rgba(255, 215, 0, 0.8),
+                0 0 40px rgba(255, 165, 0, 0.6),
+                0 4px 0 #CC8800,
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            animation: pulse 0.8s ease-in-out infinite;
+            border: 3px solid #FF8C00;
+        }
+
+        .note-dot.hit {
+            background: radial-gradient(circle, #7FFF00 0%, #32CD32 100%);
+            box-shadow:
+                0 0 20px rgba(127, 255, 0, 0.9),
+                0 0 40px rgba(50, 205, 50, 0.6),
+                0 4px 0 #228B22;
+            animation: hit-flash 0.3s ease-out;
+            border: 3px solid #00FF00;
+        }
+
+        .note-dot.miss {
+            background: radial-gradient(circle, #FF4500 0%, #DC143C 100%);
+            box-shadow:
+                0 0 20px rgba(255, 69, 0, 0.9),
+                0 0 40px rgba(220, 20, 60, 0.6);
+            animation: miss-flash 0.3s ease-out;
+            border: 3px solid #8B0000;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes hit-flash {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.5); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes miss-flash {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .fret-marker {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            bottom: -50px;
+        }
+
+        .control-panel {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .speed-control {
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #DAA520;
+            box-shadow:
+                0 6px 0 #B8860B,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 250px;
+        }
+
+        .speed-label {
+            font-size: 0.9rem;
+            color: #8B4513;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .speed-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #FF6B35;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .speed-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .speed-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-toggle {
+            background: linear-gradient(135deg, #E6F3FF 0%, #B3D9FF 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #4682B4;
+            box-shadow:
+                0 6px 0 #36648B,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toggle-label {
+            font-size: 1rem;
+            color: #1E3A5F;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 70px;
+            height: 35px;
+            background: linear-gradient(135deg, #CD5C5C 0%, #DC143C 100%);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 3px solid #8B0000;
+            box-shadow:
+                0 4px 0 #660000,
+                inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #7FFF00 0%, #32CD32 100%);
+            border-color: #228B22;
+            box-shadow:
+                0 4px 0 #006400,
+                inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #FFF 0%, #F0F0F0 100%);
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow:
+                0 3px 0 #AAA,
+                0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(35px);
+        }
+
+        .practice-indicator {
+            font-size: 0.9rem;
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .chord-selector {
+            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #C71585;
+            box-shadow:
+                0 6px 0 #8B1874,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .chord-label {
+            font-size: 0.9rem;
+            color: #4B0026;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chord-select {
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #FFF 0%, #FFE4E1 100%);
+            border: 3px solid #C71585;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            color: #8B1874;
+            box-shadow:
+                0 4px 0 #8B1874,
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .chord-select:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow:
+                0 4px 0 #8B1874,
+                0 0 0 3px #FFD700,
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .game-canvas-container {
+            background: rgba(139, 90, 43, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .game-canvas-container.active {
+            display: block;
+        }
+
+        #gameCanvas {
+            width: 100%;
+            max-width: 800px;
+            height: 150px;
+            background: linear-gradient(to bottom, #4682B4 0%, #3CB371 60%, #654321 100%);
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .title-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #FFD700 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-in;
+            overflow: hidden;
+        }
+
+        .title-screen::before {
+            content: '🎵 🎸 🎶 🎵 🎸 🎶 🎵 🎸 🎶';
+            position: absolute;
+            font-size: 4rem;
+            animation: float-music 20s linear infinite;
+            opacity: 0.3;
+            top: 20%;
+            white-space: nowrap;
+        }
+
+        @keyframes float-music {
+            from { left: 100%; }
+            to { left: -100%; }
+        }
+
+        .title-screen.hidden {
+            display: none;
+        }
+
+        .title-logo {
+            font-size: 7rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow:
+                5px 5px 0 #FF6B35,
+                10px 10px 0 #FF1493,
+                4px 4px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+            animation: bounce-title 2s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        @keyframes bounce-title {
+            0%, 100% { transform: translateY(0) rotate(-3deg) scale(1); }
+            25% { transform: translateY(-20px) rotate(0deg) scale(1.05); }
+            50% { transform: translateY(0) rotate(3deg) scale(1); }
+            75% { transform: translateY(-10px) rotate(0deg) scale(1.02); }
+        }
+
+        .title-subtitle {
+            font-size: 2rem;
+            color: #FF6B35;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            text-shadow:
+                2px 2px 0 #FFF,
+                3px 3px 5px rgba(0, 0, 0, 0.3);
+            letter-spacing: 3px;
+        }
+
+        .title-button {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            border: 5px solid #8B3A00;
+            padding: 1.5rem 4rem;
+            font-size: 2rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow:
+                0 10px 0 #C44100,
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: pulse-button 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-button {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .title-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow:
+                0 15px 0 #C44100,
+                0 15px 40px rgba(0, 0, 0, 0.5),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .title-button:active {
+            transform: translateY(5px);
+            box-shadow:
+                0 5px 0 #C44100,
+                0 5px 20px rgba(0, 0, 0, 0.3),
+                inset 0 3px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .game-over-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .game-over-screen.active {
+            display: flex;
+        }
+
+        .game-over-title {
+            font-size: 5rem;
+            font-weight: 900;
+            color: #f87171;
+            text-shadow: 0 5px 20px rgba(248, 113, 113, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .game-over-score {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-over-streak {
+            font-size: 1.5rem;
+            color: #facc15;
+            margin-bottom: 3rem;
+        }
+
+        .game-over-buttons {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .game-over-button {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            border: 4px solid #8B3A00;
+            padding: 1rem 3rem;
+            font-size: 1.3rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow:
+                0 6px 0 #C44100,
+                0 6px 20px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .game-over-button:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 9px 0 #C44100,
+                0 9px 25px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .game-over-button:active {
+            transform: translateY(3px);
+            box-shadow:
+                0 3px 0 #C44100,
+                0 3px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .win-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .win-screen.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 5rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 5px 20px rgba(251, 191, 36, 0.5);
+            margin-bottom: 1rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .win-subtitle {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .timer-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            z-index: 100;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.25rem;
+        }
+
+        .achievements-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B4513;
+            border: 4px solid #DAA520;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow:
+                0 6px 0 #B8860B,
+                0 6px 20px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            z-index: 100;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+            animation: trophy-bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes trophy-bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .achievements-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow:
+                0 10px 0 #B8860B,
+                0 10px 25px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            animation: none;
+        }
+
+        .achievements-button:active {
+            transform: translateY(3px);
+            box-shadow:
+                0 3px 0 #B8860B,
+                0 3px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .achievements-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            z-index: 1001;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .achievements-screen.active {
+            display: flex;
+        }
+
+        .achievements-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 2rem;
+        }
+
+        .achievements-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #facc15;
+        }
+
+        .close-achievements {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .close-achievements:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .achievement-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+
+        .achievement-badge:hover {
+            transform: translateY(-5px);
+        }
+
+        .achievement-badge.unlocked {
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(234, 179, 8, 0.2));
+            border: 2px solid #facc15;
+        }
+
+        .badge-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            filter: grayscale(100%);
+            opacity: 0.3;
+        }
+
+        .achievement-badge.unlocked .badge-icon {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        .badge-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+        }
+
+        .achievement-badge.unlocked .badge-name {
+            color: #facc15;
+        }
+
+        .badge-type {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 0.25rem;
+        }
+
+        .achievement-badge.unlocked .badge-type {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .plant-health-bar {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .health-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+        }
+
+        .health-bar-bg {
+            width: 100%;
+            max-width: 400px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .health-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444 0%, #f87171 50%, #4ade80 100%);
+            transition: width 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .health-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin-top: 0.5rem;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            border: 4px solid #8B3A00;
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow:
+                0 6px 0 #C44100,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 9px 0 #C44100,
+                0 9px 20px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .start-button:active {
+            transform: translateY(3px);
+            box-shadow:
+                0 3px 0 #C44100,
+                0 3px 10px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .start-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            filter: grayscale(50%);
+        }
+
+        .start-button.active {
+            background: linear-gradient(135deg, #FF1493 0%, #FF69B4 100%);
+            border-color: #8B0045;
+            box-shadow:
+                0 6px 0 #8B0045,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .start-button.active:hover {
+            box-shadow:
+                0 9px 0 #8B0045,
+                0 9px 20px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #7FFF00 0%, #32CD32 100%);
+            border-color: #228B22;
+            box-shadow:
+                0 6px 0 #228B22,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .play-button:hover {
+            box-shadow:
+                0 9px 0 #228B22,
+                0 9px 20px rgba(0, 0, 0, 0.4),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .status {
+            font-size: 1.1rem;
+            color: #2C1810;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF9C4 0%, #FFEB3B 100%);
+            padding: 0.75rem 1.5rem;
+            border-radius: 15px;
+            border: 3px solid #FFA000;
+            box-shadow:
+                0 4px 0 #FF6F00,
+                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .feedback {
+            min-height: 30px;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .feedback.hit {
+            color: #7FFF00;
+            text-shadow:
+                3px 3px 0 #32CD32,
+                5px 5px 10px rgba(0, 0, 0, 0.5);
+            animation: hit-bounce 0.3s ease-out;
+        }
+
+        .feedback.miss {
+            color: #FF4500;
+            text-shadow:
+                3px 3px 0 #DC143C,
+                5px 5px 10px rgba(0, 0, 0, 0.5);
+            animation: shake 0.3s ease-out;
+        }
+
+        @keyframes hit-bounce {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-5deg); }
+            75% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        .song-info {
+            background: linear-gradient(135deg, #DDA0DD 0%, #DA70D6 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border: 4px solid #9932CC;
+            box-shadow:
+                0 6px 0 #8B008B,
+                0 6px 15px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .song-title {
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: #4B0082;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .song-pattern {
+            font-size: 1rem;
+            color: #8B008B;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-screen" id="titleScreen">
+        <div class="title-logo">🎸 Plucky</div>
+        <div class="title-subtitle">Strum. Match. Survive.</div>
+        <button class="title-button" id="startButton">Start Playing</button>
+    </div>
+
+    <div class="game-over-screen" id="gameOverScreen">
+        <div class="game-over-title">Game Over!</div>
+        <div class="game-over-score" id="finalScore">Score: 0</div>
+        <div class="game-over-streak" id="finalStreak">Best Streak: 0</div>
+        <div class="game-over-buttons">
+            <button class="game-over-button" id="playAgainButton">Play Again</button>
+            <button class="game-over-button" id="mainMenuButton">Main Menu</button>
+        </div>
+    </div>
+
+    <div class="win-screen" id="winScreen">
+        <div class="win-title">🏆 Victory! 🏆</div>
+        <div class="win-subtitle" id="winMessage">You survived 2 minutes!</div>
+        <div class="game-over-score" id="winScore">Score: 0</div>
+        <div class="game-over-streak" id="winStreak">Best Streak: 0</div>
+        <div class="game-over-buttons">
+            <button class="game-over-button" id="playAgainWinButton">Play Again</button>
+            <button class="game-over-button" id="mainMenuWinButton">Main Menu</button>
+        </div>
+    </div>
+
+    <div class="achievements-screen" id="achievementsScreen">
+        <div class="achievements-header">
+            <div class="achievements-title">🏆 Achievements</div>
+            <button class="close-achievements" id="closeAchievements">Close</button>
+        </div>
+        <div class="achievements-grid" id="achievementsGrid">
+            <!-- Badges will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <button class="achievements-button" id="achievementsButton">🏆 Achievements</button>
+
+    <div class="timer-display" id="timerDisplay" style="display: none;">
+        <div class="timer-label">Time Left</div>
+        <div id="timerValue">2:00</div>
+    </div>
+
+    <div class="container">
+        <h1>🎸 Plucky</h1>
+        
+        <div class="game-info">
+            <div class="info-card">
+                <div class="info-label">Score</div>
+                <div class="info-value score" id="scoreDisplay">0</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Streak</div>
+                <div class="info-value" id="streakDisplay">0</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">Next Note</div>
+                <div class="info-value" id="nextNoteDisplay">-</div>
+            </div>
+        </div>
+
+        <div class="game-canvas-container" id="gameCanvasContainer">
+            <canvas id="gameCanvas" width="800" height="150"></canvas>
+            <div class="plant-health-bar">
+                <div class="health-label">Plant Health</div>
+                <div class="health-bar-bg">
+                    <div class="health-bar-fill" id="healthBarFill" style="width: 100%;"></div>
+                </div>
+                <div class="health-value" id="healthValue">30 / 30</div>
+            </div>
+        </div>
+
+        <div class="fretboard-container">
+            <div class="fretboard" id="fretboard">
+                <!-- Strings will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <button class="start-button" id="micButton">Enable Microphone</button>
+            <button class="start-button play-button" id="playButton" disabled>Start Game</button>
+            <div class="chord-selector">
+                <div class="chord-label">Chord</div>
+                <select class="chord-select" id="chordSelect">
+                    <option value="C">C Major</option>
+                    <option value="Cm">C Minor</option>
+                    <option value="C#">C# Major</option>
+                    <option value="C#m">C# Minor</option>
+                    <option value="D">D Major</option>
+                    <option value="Dm">D Minor</option>
+                    <option value="D#">D# Major</option>
+                    <option value="D#m">D# Minor</option>
+                    <option value="E">E Major</option>
+                    <option value="Em">E Minor</option>
+                    <option value="F">F Major</option>
+                    <option value="Fm">F Minor</option>
+                    <option value="F#">F# Major</option>
+                    <option value="F#m">F# Minor</option>
+                    <option value="G">G Major</option>
+                    <option value="Gm">G Minor</option>
+                    <option value="G#">G# Major</option>
+                    <option value="G#m">G# Minor</option>
+                    <option value="A">A Major</option>
+                    <option value="Am">A Minor</option>
+                    <option value="A#">A# Major</option>
+                    <option value="A#m">A# Minor</option>
+                    <option value="B">B Major</option>
+                    <option value="Bm">B Minor</option>
+                </select>
+            </div>
+            <div class="mode-toggle">
+                <span class="toggle-label">Practice Mode</span>
+                <div class="toggle-switch" id="practiceToggle">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="speed-control">
+                <div class="speed-label">Game Speed</div>
+                <div class="speed-value" id="speedValue">120 BPM</div>
+                <input type="range" min="60" max="200" value="120" class="speed-slider" id="speedSlider">
+            </div>
+        </div>
+        
+        <div class="status" id="status">Enable microphone to begin</div>
+        <div class="feedback" id="feedback"></div>
+        <div class="practice-indicator" id="practiceIndicator" style="display: none;">Practice Mode: Take your time!</div>
+
+        <div class="song-info">
+            <div class="song-title" id="songTitle">Song: C Major Arpeggio</div>
+            <div class="song-pattern" id="songPattern">Pattern: C - E - G - C (repeating)</div>
+        </div>
+    </div>
+
+    <script>
+        const FRET_COUNT = 12;
+        const STRINGS = [
+            { name: 'e', note: 'E', octave: 4, stringNum: 1 },
+            { name: 'B', note: 'B', octave: 3, stringNum: 2 },
+            { name: 'G', note: 'G', octave: 3, stringNum: 3 },
+            { name: 'D', note: 'D', octave: 3, stringNum: 4 },
+            { name: 'A', note: 'A', octave: 2, stringNum: 5 },
+            { name: 'E', note: 'E', octave: 2, stringNum: 6 }
+        ];
+
+        const noteStrings = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const fretMarkers = [3, 5, 7, 9, 12];
+
+        // Chord arpeggio patterns
+        const CHORD_PATTERNS = {
+            // Major chords (Root, 3rd, 5th, Octave)
+            'C': [
+                { note: 'C', octave: 3 },
+                { note: 'E', octave: 3 },
+                { note: 'G', octave: 3 },
+                { note: 'C', octave: 4 }
+            ],
+            'C#': [
+                { note: 'C#', octave: 3 },
+                { note: 'F', octave: 3 },
+                { note: 'G#', octave: 3 },
+                { note: 'C#', octave: 4 }
+            ],
+            'D': [
+                { note: 'D', octave: 3 },
+                { note: 'F#', octave: 3 },
+                { note: 'A', octave: 3 },
+                { note: 'D', octave: 4 }
+            ],
+            'D#': [
+                { note: 'D#', octave: 3 },
+                { note: 'G', octave: 3 },
+                { note: 'A#', octave: 3 },
+                { note: 'D#', octave: 4 }
+            ],
+            'E': [
+                { note: 'E', octave: 3 },
+                { note: 'G#', octave: 3 },
+                { note: 'B', octave: 3 },
+                { note: 'E', octave: 4 }
+            ],
+            'F': [
+                { note: 'F', octave: 3 },
+                { note: 'A', octave: 3 },
+                { note: 'C', octave: 4 },
+                { note: 'F', octave: 4 }
+            ],
+            'F#': [
+                { note: 'F#', octave: 3 },
+                { note: 'A#', octave: 3 },
+                { note: 'C#', octave: 4 },
+                { note: 'F#', octave: 4 }
+            ],
+            'G': [
+                { note: 'G', octave: 3 },
+                { note: 'B', octave: 3 },
+                { note: 'D', octave: 4 },
+                { note: 'G', octave: 4 }
+            ],
+            'G#': [
+                { note: 'G#', octave: 3 },
+                { note: 'C', octave: 4 },
+                { note: 'D#', octave: 4 },
+                { note: 'G#', octave: 4 }
+            ],
+            'A': [
+                { note: 'A', octave: 3 },
+                { note: 'C#', octave: 4 },
+                { note: 'E', octave: 4 },
+                { note: 'A', octave: 4 }
+            ],
+            'A#': [
+                { note: 'A#', octave: 3 },
+                { note: 'D', octave: 4 },
+                { note: 'F', octave: 4 },
+                { note: 'A#', octave: 4 }
+            ],
+            'B': [
+                { note: 'B', octave: 3 },
+                { note: 'D#', octave: 4 },
+                { note: 'F#', octave: 4 },
+                { note: 'B', octave: 4 }
+            ],
+            // Minor chords (Root, Minor 3rd, 5th, Octave)
+            'Cm': [
+                { note: 'C', octave: 3 },
+                { note: 'D#', octave: 3 },
+                { note: 'G', octave: 3 },
+                { note: 'C', octave: 4 }
+            ],
+            'C#m': [
+                { note: 'C#', octave: 3 },
+                { note: 'E', octave: 3 },
+                { note: 'G#', octave: 3 },
+                { note: 'C#', octave: 4 }
+            ],
+            'Dm': [
+                { note: 'D', octave: 3 },
+                { note: 'F', octave: 3 },
+                { note: 'A', octave: 3 },
+                { note: 'D', octave: 4 }
+            ],
+            'D#m': [
+                { note: 'D#', octave: 3 },
+                { note: 'F#', octave: 3 },
+                { note: 'A#', octave: 3 },
+                { note: 'D#', octave: 4 }
+            ],
+            'Em': [
+                { note: 'E', octave: 3 },
+                { note: 'G', octave: 3 },
+                { note: 'B', octave: 3 },
+                { note: 'E', octave: 4 }
+            ],
+            'Fm': [
+                { note: 'F', octave: 3 },
+                { note: 'G#', octave: 3 },
+                { note: 'C', octave: 4 },
+                { note: 'F', octave: 4 }
+            ],
+            'F#m': [
+                { note: 'F#', octave: 3 },
+                { note: 'A', octave: 3 },
+                { note: 'C#', octave: 4 },
+                { note: 'F#', octave: 4 }
+            ],
+            'Gm': [
+                { note: 'G', octave: 3 },
+                { note: 'A#', octave: 3 },
+                { note: 'D', octave: 4 },
+                { note: 'G', octave: 4 }
+            ],
+            'G#m': [
+                { note: 'G#', octave: 3 },
+                { note: 'B', octave: 3 },
+                { note: 'D#', octave: 4 },
+                { note: 'G#', octave: 4 }
+            ],
+            'Am': [
+                { note: 'A', octave: 3 },
+                { note: 'C', octave: 4 },
+                { note: 'E', octave: 4 },
+                { note: 'A', octave: 4 }
+            ],
+            'A#m': [
+                { note: 'A#', octave: 3 },
+                { note: 'C#', octave: 4 },
+                { note: 'F', octave: 4 },
+                { note: 'A#', octave: 4 }
+            ],
+            'Bm': [
+                { note: 'B', octave: 3 },
+                { note: 'D', octave: 4 },
+                { note: 'F#', octave: 4 },
+                { note: 'B', octave: 4 }
+            ]
+        };
+
+        let SONG_PATTERN = CHORD_PATTERNS['C']; // Default to C Major
+        let currentChord = 'C';
+
+        let BPM = 120;
+        let NOTE_INTERVAL = (60 / BPM) * 1000; // ms per beat
+        const HIT_WINDOW = 300; // ms window to hit the note
+
+        let audioContext;
+        let analyser;
+        let microphone;
+        let isListening = false;
+        let isPlaying = false;
+        let isPracticeMode = false;
+        let noteDots = {};
+        let score = 0;
+        let streak = 0;
+        let currentNoteIndex = 0;
+        let lastNoteTime = 0;
+        let gameInterval = null;
+        let currentTargetNote = null;
+        let lastDetectedNote = null;
+        let lastDetectedTime = 0;
+
+        // Game canvas elements
+        let canvas;
+        let ctx;
+        let plantHealth = 30;
+        const MAX_PLANT_HEALTH = 30;
+        let zombies = [];
+        let projectiles = [];
+        let animationFrameId = null;
+        let maxStreak = 0;
+        let gameTimer = null;
+        let timeRemaining = 120; // 2 minutes in seconds
+        const GAME_DURATION = 120;
+
+        // Achievements - stored in localStorage
+        let unlockedAchievements = JSON.parse(localStorage.getItem('pluckyAchievements') || '[]');
+
+        const titleScreen = document.getElementById('titleScreen');
+        const winScreen = document.getElementById('winScreen');
+        const achievementsScreen = document.getElementById('achievementsScreen');
+        const achievementsButton = document.getElementById('achievementsButton');
+        const closeAchievements = document.getElementById('closeAchievements');
+        const achievementsGrid = document.getElementById('achievementsGrid');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerValue = document.getElementById('timerValue');
+        const winScore = document.getElementById('winScore');
+        const winStreak = document.getElementById('winStreak');
+        const winMessage = document.getElementById('winMessage');
+        const playAgainWinButton = document.getElementById('playAgainWinButton');
+        const mainMenuWinButton = document.getElementById('mainMenuWinButton');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const startButton = document.getElementById('startButton');
+        const playAgainButton = document.getElementById('playAgainButton');
+        const mainMenuButton = document.getElementById('mainMenuButton');
+        const finalScore = document.getElementById('finalScore');
+        const finalStreak = document.getElementById('finalStreak');
+        const micButton = document.getElementById('micButton');
+        const playButton = document.getElementById('playButton');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const streakDisplay = document.getElementById('streakDisplay');
+        const nextNoteDisplay = document.getElementById('nextNoteDisplay');
+        const statusDisplay = document.getElementById('status');
+        const feedbackDisplay = document.getElementById('feedback');
+        const fretboard = document.getElementById('fretboard');
+        const speedSlider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+        const practiceToggle = document.getElementById('practiceToggle');
+        const practiceIndicator = document.getElementById('practiceIndicator');
+        const chordSelect = document.getElementById('chordSelect');
+        const songTitle = document.getElementById('songTitle');
+        const songPattern = document.getElementById('songPattern');
+        const gameCanvasContainer = document.getElementById('gameCanvasContainer');
+        const healthBarFill = document.getElementById('healthBarFill');
+        const healthValue = document.getElementById('healthValue');
+
+        function getMIDINoteNumber(note, octave) {
+            const noteIndex = noteStrings.indexOf(note);
+            return 12 + noteIndex + (octave * 12);
+        }
+
+        function getNoteFromMIDI(midiNumber) {
+            const octave = Math.floor((midiNumber - 12) / 12);
+            const note = noteStrings[(midiNumber - 12) % 12];
+            return { note, octave };
+        }
+
+        function getNoteAtFret(stringInfo, fret) {
+            const stringMIDI = getMIDINoteNumber(stringInfo.note, stringInfo.octave);
+            const fretMIDI = stringMIDI + fret;
+            return getNoteFromMIDI(fretMIDI);
+        }
+
+        function createFretboard() {
+            const stringsContainer = document.createElement('div');
+            stringsContainer.className = 'strings-container';
+
+            STRINGS.forEach((stringInfo, stringIndex) => {
+                const stringDiv = document.createElement('div');
+                stringDiv.className = 'string';
+
+                const stringLabel = document.createElement('div');
+                stringLabel.className = 'string-label';
+                stringLabel.textContent = stringInfo.name;
+                stringDiv.appendChild(stringLabel);
+
+                const stringLine = document.createElement('div');
+                stringLine.className = 'string-line';
+                stringDiv.appendChild(stringLine);
+
+                const fretsDiv = document.createElement('div');
+                fretsDiv.className = 'frets';
+
+                for (let fret = 0; fret <= FRET_COUNT; fret++) {
+                    const fretDiv = document.createElement('div');
+                    fretDiv.className = fret === 0 ? 'fret nut' : 'fret';
+
+                    const noteDot = document.createElement('div');
+                    noteDot.className = 'note-dot';
+
+                    const noteAtFret = getNoteAtFret(stringInfo, fret);
+                    const dotKey = `${stringIndex}-${fret}`;
+                    noteDots[dotKey] = {
+                        element: noteDot,
+                        note: noteAtFret.note,
+                        octave: noteAtFret.octave,
+                        string: stringIndex,
+                        fret: fret,
+                        stringName: stringInfo.name
+                    };
+
+                    fretDiv.appendChild(noteDot);
+
+                    if (stringIndex === 0 && fret > 0) {
+                        const fretNumber = document.createElement('div');
+                        fretNumber.className = 'fret-number';
+                        fretNumber.textContent = fret;
+                        fretDiv.appendChild(fretNumber);
+
+                        if (fretMarkers.includes(fret)) {
+                            const marker = document.createElement('div');
+                            marker.className = 'fret-marker';
+                            fretDiv.appendChild(marker);
+                        }
+                    }
+
+                    fretsDiv.appendChild(fretDiv);
+                }
+
+                stringDiv.appendChild(fretsDiv);
+                stringsContainer.appendChild(stringDiv);
+            });
+
+            fretboard.appendChild(stringsContainer);
+        }
+
+        function clearAllDots() {
+            Object.values(noteDots).forEach(dot => {
+                dot.element.className = 'note-dot';
+            });
+        }
+
+        function showTargetNote(note, octave) {
+            clearAllDots();
+            Object.values(noteDots).forEach(dot => {
+                if (dot.note === note && dot.octave === octave) {
+                    dot.element.classList.add('target');
+                }
+            });
+        }
+
+        function flashHit(note, octave) {
+            Object.values(noteDots).forEach(dot => {
+                if (dot.note === note && dot.octave === octave) {
+                    dot.element.classList.remove('target');
+                    dot.element.classList.add('hit');
+                    setTimeout(() => {
+                        dot.element.classList.remove('hit');
+                    }, 300);
+                }
+            });
+        }
+
+        function flashMiss(note, octave) {
+            Object.values(noteDots).forEach(dot => {
+                if (dot.note === note && dot.octave === octave) {
+                    dot.element.classList.remove('target');
+                    dot.element.classList.add('miss');
+                    setTimeout(() => {
+                        dot.element.classList.remove('miss');
+                    }, 300);
+                }
+            });
+        }
+
+        function updateScore(points) {
+            score += points;
+            scoreDisplay.textContent = score;
+            scoreDisplay.className = 'info-value score ' + (score >= 0 ? 'positive' : 'negative');
+        }
+
+        function updateStreak(hit) {
+            if (hit) {
+                streak++;
+                if (streak > maxStreak) {
+                    maxStreak = streak;
+                }
+            } else {
+                streak = 0;
+            }
+            streakDisplay.textContent = streak;
+        }
+
+        function showFeedback(message, type) {
+            feedbackDisplay.textContent = message;
+            feedbackDisplay.className = 'feedback ' + type;
+            setTimeout(() => {
+                feedbackDisplay.textContent = '';
+                feedbackDisplay.className = 'feedback';
+            }, 1000);
+        }
+
+        // Game canvas functions
+        function initCanvas() {
+            canvas = document.getElementById('gameCanvas');
+            ctx = canvas.getContext('2d');
+        }
+
+        function spawnZombie() {
+            zombies.push({
+                x: canvas.width,
+                y: canvas.height / 2,
+                width: 30,
+                height: 40,
+                speed: 0.5,
+                health: 1
+            });
+        }
+
+        function shootProjectile() {
+            projectiles.push({
+                x: 100,
+                y: canvas.height / 2,
+                width: 10,
+                height: 10,
+                speed: 3
+            });
+        }
+
+        function updatePlantHealth(damage) {
+            plantHealth = Math.max(0, plantHealth - damage);
+            const healthPercent = (plantHealth / MAX_PLANT_HEALTH) * 100;
+            healthBarFill.style.width = healthPercent + '%';
+            healthValue.textContent = `${plantHealth} / ${MAX_PLANT_HEALTH}`;
+
+            if (plantHealth <= 0) {
+                stopGame();
+                statusDisplay.textContent = 'Game Over! Plant was destroyed!';
+            }
+        }
+
+        function drawPlant() {
+            // Draw plant base (pot)
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(60, canvas.height / 2 + 10, 40, 20);
+
+            // Draw plant stem
+            ctx.fillStyle = '#228B22';
+            ctx.fillRect(75, canvas.height / 2 - 20, 10, 30);
+
+            // Draw plant head (peashooter)
+            ctx.fillStyle = '#32CD32';
+            ctx.beginPath();
+            ctx.arc(80, canvas.height / 2 - 20, 15, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw mouth/shooter
+            ctx.fillStyle = '#006400';
+            ctx.fillRect(90, canvas.height / 2 - 25, 15, 10);
+        }
+
+        function drawZombie(zombie) {
+            // Draw zombie body
+            ctx.fillStyle = '#90EE90';
+            ctx.fillRect(zombie.x, zombie.y - 20, zombie.width, zombie.height);
+
+            // Draw zombie head
+            ctx.fillStyle = '#9ACD32';
+            ctx.beginPath();
+            ctx.arc(zombie.x + zombie.width / 2, zombie.y - 25, 12, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw zombie eyes
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(zombie.x + 8, zombie.y - 30, 4, 4);
+            ctx.fillRect(zombie.x + 18, zombie.y - 30, 4, 4);
+        }
+
+        function drawProjectile(projectile) {
+            ctx.fillStyle = '#90EE90';
+            ctx.beginPath();
+            ctx.arc(projectile.x, projectile.y, projectile.width / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Add glow effect
+            ctx.strokeStyle = '#32CD32';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function updateGame() {
+            if (!isPlaying) return;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw plant
+            drawPlant();
+
+            // Update and draw zombies
+            for (let i = zombies.length - 1; i >= 0; i--) {
+                const zombie = zombies[i];
+                zombie.x -= zombie.speed;
+
+                // Check if zombie reached the plant
+                if (zombie.x < 110) {
+                    updatePlantHealth(5);
+                    zombies.splice(i, 1);
+                    continue;
+                }
+
+                drawZombie(zombie);
+            }
+
+            // Update and draw projectiles
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                const projectile = projectiles[i];
+                projectile.x += projectile.speed;
+
+                // Remove projectile if it goes off screen
+                if (projectile.x > canvas.width) {
+                    projectiles.splice(i, 1);
+                    continue;
+                }
+
+                // Check collision with zombies
+                let hit = false;
+                for (let j = zombies.length - 1; j >= 0; j--) {
+                    const zombie = zombies[j];
+                    if (projectile.x + projectile.width > zombie.x &&
+                        projectile.x < zombie.x + zombie.width &&
+                        projectile.y + projectile.height > zombie.y - 20 &&
+                        projectile.y < zombie.y + 20) {
+                        // Hit!
+                        zombies.splice(j, 1);
+                        hit = true;
+                        break;
+                    }
+                }
+
+                if (hit) {
+                    projectiles.splice(i, 1);
+                    continue;
+                }
+
+                drawProjectile(projectile);
+            }
+
+            animationFrameId = requestAnimationFrame(updateGame);
+        }
+
+        function startGameCanvas() {
+            gameCanvasContainer.classList.add('active');
+            plantHealth = MAX_PLANT_HEALTH;
+            updatePlantHealth(0); // Reset display
+            zombies = [];
+            projectiles = [];
+            updateGame();
+        }
+
+        function stopGameCanvas() {
+            gameCanvasContainer.classList.remove('active');
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            zombies = [];
+            projectiles = [];
+        }
+
+        function nextNote() {
+            const targetNote = SONG_PATTERN[currentNoteIndex];
+            currentTargetNote = targetNote;
+            lastNoteTime = Date.now();
+
+            showTargetNote(targetNote.note, targetNote.octave);
+            nextNoteDisplay.textContent = `${targetNote.note}${targetNote.octave}`;
+
+            // Spawn a zombie for this note
+            spawnZombie();
+
+            currentNoteIndex = (currentNoteIndex + 1) % SONG_PATTERN.length;
+        }
+
+        function checkNote(detectedNote, detectedOctave) {
+            if (!currentTargetNote) return;
+
+            const now = Date.now();
+            const timeSinceNote = now - lastNoteTime;
+
+            // In practice mode, no time limit
+            if (!isPracticeMode) {
+                // Check if we're within the hit window
+                if (timeSinceNote > NOTE_INTERVAL + HIT_WINDOW) {
+                    // Note expired, miss
+                    flashMiss(currentTargetNote.note, currentTargetNote.octave);
+                    updateScore(-1);
+                    updateStreak(false);
+                    showFeedback('MISS!', 'miss');
+                    currentTargetNote = null;
+                    return;
+                }
+            }
+
+            // Check if the detected note matches the target
+            if (detectedNote === currentTargetNote.note && detectedOctave === currentTargetNote.octave) {
+                // Hit!
+                flashHit(detectedNote, detectedOctave);
+                updateScore(1);
+                updateStreak(true);
+                showFeedback('HIT! +1', 'hit');
+                currentTargetNote = null;
+
+                // Shoot projectile when note is hit
+                shootProjectile();
+
+                // In practice mode, automatically show next note
+                if (isPracticeMode) {
+                    setTimeout(() => {
+                        nextNote();
+                    }, 500);
+                }
+            }
+        }
+
+        function startGame() {
+            if (isPlaying) return;
+
+            isPlaying = true;
+            score = 0;
+            streak = 0;
+            currentNoteIndex = 0;
+            currentTargetNote = null;
+
+            updateScore(0);
+            updateStreak(false);
+
+            playButton.textContent = 'Stop Game';
+            playButton.classList.add('active');
+
+            if (isPracticeMode) {
+                statusDisplay.textContent = 'Practice Mode: Take your time with each note!';
+                practiceIndicator.style.display = 'block';
+                speedSlider.disabled = true;
+                speedSlider.style.opacity = '0.5';
+            } else {
+                statusDisplay.textContent = 'Playing! Hit the notes!';
+                practiceIndicator.style.display = 'none';
+                // Start timer only in normal mode
+                startTimer();
+            }
+
+            // Start game canvas
+            startGameCanvas();
+
+            // Start the first note immediately
+            nextNote();
+
+            // In practice mode, don't use interval - wait for user to hit each note
+            if (!isPracticeMode) {
+                // Set interval for subsequent notes
+                gameInterval = setInterval(() => {
+                    // Check if previous note was missed
+                    if (currentTargetNote) {
+                        const timeSinceNote = Date.now() - lastNoteTime;
+                        if (timeSinceNote > NOTE_INTERVAL + HIT_WINDOW) {
+                            flashMiss(currentTargetNote.note, currentTargetNote.octave);
+                            updateScore(-1);
+                            updateStreak(false);
+                            showFeedback('MISS!', 'miss');
+                            currentTargetNote = null;
+                        }
+                    }
+
+                    // Show next note if current one is cleared
+                    if (!currentTargetNote) {
+                        nextNote();
+                    }
+                }, NOTE_INTERVAL);
+            }
+        }
+
+        function stopGame(isWin = false) {
+            isPlaying = false;
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
+            }
+
+            stopTimer();
+
+            currentTargetNote = null;
+            clearAllDots();
+
+            playButton.textContent = 'Start Game';
+            playButton.classList.remove('active');
+
+            // Update status based on why game ended
+            if (isWin) {
+                statusDisplay.textContent = `Victory! You survived 2 minutes! Final Score: ${score}`;
+            } else if (plantHealth <= 0) {
+                statusDisplay.textContent = `Game Over! Plant destroyed! Final Score: ${score}`;
+            } else {
+                statusDisplay.textContent = `Game Over! Final Score: ${score}`;
+            }
+
+            nextNoteDisplay.textContent = '-';
+            practiceIndicator.style.display = 'none';
+            speedSlider.disabled = false;
+            speedSlider.style.opacity = '1';
+
+            // Stop game canvas
+            stopGameCanvas();
+
+            // Show appropriate screen
+            if (isWin) {
+                showWinScreen();
+            } else {
+                showGameOver();
+            }
+        }
+
+        function showGameOver() {
+            finalScore.textContent = `Score: ${score}`;
+            finalStreak.textContent = `Best Streak: ${maxStreak}`;
+            gameOverScreen.classList.add('active');
+        }
+
+        function hideGameOver() {
+            gameOverScreen.classList.remove('active');
+        }
+
+        function showTitleScreen() {
+            titleScreen.classList.remove('hidden');
+        }
+
+        function hideTitleScreen() {
+            titleScreen.classList.add('hidden');
+        }
+
+        function showWinScreen() {
+            winMessage.textContent = `You mastered ${currentChord}!`;
+            winScore.textContent = `Score: ${score}`;
+            winStreak.textContent = `Best Streak: ${maxStreak}`;
+            winScreen.classList.add('active');
+
+            // Unlock achievement for this chord
+            unlockAchievement(currentChord);
+        }
+
+        function hideWinScreen() {
+            winScreen.classList.remove('active');
+        }
+
+        function showAchievements() {
+            achievementsScreen.classList.add('active');
+        }
+
+        function hideAchievements() {
+            achievementsScreen.classList.remove('active');
+        }
+
+        function unlockAchievement(chordName) {
+            if (!unlockedAchievements.includes(chordName)) {
+                unlockedAchievements.push(chordName);
+                localStorage.setItem('pluckyAchievements', JSON.stringify(unlockedAchievements));
+                renderAchievements();
+            }
+        }
+
+        function renderAchievements() {
+            achievementsGrid.innerHTML = '';
+
+            const allChords = [
+                { name: 'C', icon: '🎸', type: 'Major' },
+                { name: 'C#', icon: '🎸', type: 'Major' },
+                { name: 'D', icon: '🎸', type: 'Major' },
+                { name: 'D#', icon: '🎸', type: 'Major' },
+                { name: 'E', icon: '🎸', type: 'Major' },
+                { name: 'F', icon: '🎸', type: 'Major' },
+                { name: 'F#', icon: '🎸', type: 'Major' },
+                { name: 'G', icon: '🎸', type: 'Major' },
+                { name: 'G#', icon: '🎸', type: 'Major' },
+                { name: 'A', icon: '🎸', type: 'Major' },
+                { name: 'A#', icon: '🎸', type: 'Major' },
+                { name: 'B', icon: '🎸', type: 'Major' },
+                { name: 'Cm', icon: '🎵', type: 'Minor' },
+                { name: 'C#m', icon: '🎵', type: 'Minor' },
+                { name: 'Dm', icon: '🎵', type: 'Minor' },
+                { name: 'D#m', icon: '🎵', type: 'Minor' },
+                { name: 'Em', icon: '🎵', type: 'Minor' },
+                { name: 'Fm', icon: '🎵', type: 'Minor' },
+                { name: 'F#m', icon: '🎵', type: 'Minor' },
+                { name: 'Gm', icon: '🎵', type: 'Minor' },
+                { name: 'G#m', icon: '🎵', type: 'Minor' },
+                { name: 'Am', icon: '🎵', type: 'Minor' },
+                { name: 'A#m', icon: '🎵', type: 'Minor' },
+                { name: 'Bm', icon: '🎵', type: 'Minor' }
+            ];
+
+            allChords.forEach(chord => {
+                const isUnlocked = unlockedAchievements.includes(chord.name);
+                const badgeDiv = document.createElement('div');
+                badgeDiv.className = `achievement-badge ${isUnlocked ? 'unlocked' : ''}`;
+
+                badgeDiv.innerHTML = `
+                    <div class="badge-icon">${chord.icon}</div>
+                    <div class="badge-name">${chord.name}</div>
+                    <div class="badge-type">${chord.type}</div>
+                `;
+
+                achievementsGrid.appendChild(badgeDiv);
+            });
+        }
+
+        function updateTimer() {
+            if (timeRemaining <= 0) {
+                // Player won!
+                clearInterval(gameTimer);
+                gameTimer = null;
+                stopGame(true); // Pass true to indicate win
+                return;
+            }
+
+            timeRemaining--;
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerValue.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+            // Change color when running out of time
+            if (timeRemaining <= 30) {
+                timerValue.style.color = '#f87171';
+            } else if (timeRemaining <= 60) {
+                timerValue.style.color = '#fbbf24';
+            } else {
+                timerValue.style.color = 'white';
+            }
+        }
+
+        function startTimer() {
+            timeRemaining = GAME_DURATION;
+            timerDisplay.style.display = 'block';
+            updateTimer();
+            gameTimer = setInterval(updateTimer, 1000);
+        }
+
+        function stopTimer() {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+            timerDisplay.style.display = 'none';
+        }
+
+        function frequencyToNote(frequency) {
+            const noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
+            const roundedNoteNum = Math.round(noteNum);
+            const midiNote = roundedNoteNum + 69;
+            
+            const noteInfo = getNoteFromMIDI(midiNote);
+            
+            return { ...noteInfo, frequency };
+        }
+
+        function autoCorrelate(buffer, sampleRate) {
+            let SIZE = buffer.length;
+            let rms = 0;
+
+            for (let i = 0; i < SIZE; i++) {
+                const val = buffer[i];
+                rms += val * val;
+            }
+            rms = Math.sqrt(rms / SIZE);
+            
+            if (rms < 0.01) return -1;
+
+            let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+            for (let i = 0; i < SIZE / 2; i++) {
+                if (Math.abs(buffer[i]) < thres) { r1 = i; break; }
+            }
+            for (let i = 1; i < SIZE / 2; i++) {
+                if (Math.abs(buffer[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+            }
+
+            buffer = buffer.slice(r1, r2);
+            SIZE = buffer.length;
+
+            let c = new Array(SIZE).fill(0);
+            for (let i = 0; i < SIZE; i++) {
+                for (let j = 0; j < SIZE - i; j++) {
+                    c[i] = c[i] + buffer[j] * buffer[j + i];
+                }
+            }
+
+            let d = 0;
+            while (c[d] > c[d + 1]) d++;
+
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < SIZE; i++) {
+                if (c[i] > maxval) {
+                    maxval = c[i];
+                    maxpos = i;
+                }
+            }
+
+            let T0 = maxpos;
+
+            let x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+            let a = (x1 + x3 - 2 * x2) / 2;
+            let b = (x3 - x1) / 2;
+            if (a) T0 = T0 - b / (2 * a);
+
+            return sampleRate / T0;
+        }
+
+        function updatePitch() {
+            const bufferLength = analyser.fftSize;
+            const buffer = new Float32Array(bufferLength);
+            analyser.getFloatTimeDomainData(buffer);
+
+            const frequency = autoCorrelate(buffer, audioContext.sampleRate);
+
+            if (frequency > 0 && frequency < 1000) {
+                const noteInfo = frequencyToNote(frequency);
+                const now = Date.now();
+                
+                // Only check note if it's different from last detected or enough time has passed
+                if ((noteInfo.note !== lastDetectedNote || now - lastDetectedTime > 100) && isPlaying) {
+                    lastDetectedNote = noteInfo.note;
+                    lastDetectedTime = now;
+                    checkNote(noteInfo.note, noteInfo.octave);
+                }
+            }
+
+            if (isListening) {
+                requestAnimationFrame(updatePitch);
+            }
+        }
+
+        micButton.addEventListener('click', async () => {
+            if (!isListening) {
+                try {
+                    statusDisplay.textContent = 'Requesting microphone access...';
+                    console.log('Requesting microphone access...');
+
+                    // Check if getUserMedia is available
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        throw new Error('getUserMedia is not supported in this browser');
+                    }
+
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 2048;
+
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    console.log('Microphone access granted');
+
+                    microphone = audioContext.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+
+                    isListening = true;
+                    micButton.textContent = 'Microphone Active';
+                    micButton.classList.add('active');
+                    playButton.disabled = false;
+                    statusDisplay.textContent = 'Ready! Click "Start Game" to play';
+
+                    updatePitch();
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    if (error.name === 'NotAllowedError') {
+                        statusDisplay.textContent = 'Microphone access denied. Please allow microphone access.';
+                    } else if (error.name === 'NotFoundError') {
+                        statusDisplay.textContent = 'No microphone found. Please connect a microphone.';
+                    } else if (error.name === 'NotSupportedError') {
+                        statusDisplay.textContent = 'Microphone not supported in this browser. Try Chrome or Firefox.';
+                    } else {
+                        statusDisplay.textContent = `Error: ${error.message}`;
+                    }
+                }
+            }
+        });
+
+        playButton.addEventListener('click', () => {
+            if (isPlaying) {
+                stopGame();
+            } else {
+                startGame();
+            }
+        });
+
+        speedSlider.addEventListener('input', (e) => {
+            BPM = parseInt(e.target.value);
+            NOTE_INTERVAL = (60 / BPM) * 1000;
+            speedValue.textContent = `${BPM} BPM`;
+
+            // If game is currently playing, restart it with new tempo
+            if (isPlaying && !isPracticeMode) {
+                stopGame();
+                setTimeout(() => startGame(), 100);
+            }
+        });
+
+        practiceToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                return; // Don't allow toggle during gameplay
+            }
+
+            isPracticeMode = !isPracticeMode;
+            practiceToggle.classList.toggle('active');
+
+            if (isPracticeMode) {
+                statusDisplay.textContent = 'Practice Mode enabled - Notes will wait for you!';
+            } else {
+                statusDisplay.textContent = 'Normal Mode - Hit notes in time!';
+            }
+        });
+
+        chordSelect.addEventListener('change', (e) => {
+            if (isPlaying) {
+                return; // Don't allow change during gameplay
+            }
+
+            currentChord = e.target.value;
+            SONG_PATTERN = CHORD_PATTERNS[currentChord];
+
+            // Update song info display
+            const chordName = e.target.options[e.target.selectedIndex].text;
+            songTitle.textContent = `Song: ${chordName} Arpeggio`;
+
+            // Build pattern display string
+            const patternStr = SONG_PATTERN.map(n => `${n.note}${n.octave}`).join(' - ');
+            songPattern.textContent = `Pattern: ${patternStr} (repeating)`;
+
+            statusDisplay.textContent = `Chord changed to ${chordName}`;
+        });
+
+        startButton.addEventListener('click', () => {
+            hideTitleScreen();
+        });
+
+        playAgainButton.addEventListener('click', () => {
+            hideGameOver();
+            maxStreak = 0;
+            if (isListening) {
+                startGame();
+            }
+        });
+
+        mainMenuButton.addEventListener('click', () => {
+            hideGameOver();
+            showTitleScreen();
+            maxStreak = 0;
+        });
+
+        playAgainWinButton.addEventListener('click', () => {
+            hideWinScreen();
+            maxStreak = 0;
+            if (isListening) {
+                startGame();
+            }
+        });
+
+        mainMenuWinButton.addEventListener('click', () => {
+            hideWinScreen();
+            showTitleScreen();
+            maxStreak = 0;
+        });
+
+        achievementsButton.addEventListener('click', () => {
+            showAchievements();
+        });
+
+        closeAchievements.addEventListener('click', () => {
+            hideAchievements();
+        });
+
+        initCanvas();
+        createFretboard();
+        renderAchievements();
+    </script>
+</body>
+</html>
