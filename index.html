@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
-            background: linear-gradient(135deg, #87CEEB 0%, #98D8C8 50%, #90EE90 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,8 +32,8 @@
             right: 0;
             bottom: 0;
             background-image:
-                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(100, 100, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(100, 100, 200, 0.08) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -68,20 +68,21 @@
         .game-info {
             display: flex;
             gap: 2rem;
-            justify-content: center;
+            justify-content: flex-start;
             margin-bottom: 2rem;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .info-card {
-            background: linear-gradient(135deg, #FFF9E6 0%, #FFEB99 100%);
+            background: linear-gradient(135deg, #2d3561 0%, #1f2544 100%);
             border-radius: 20px;
             padding: 1rem 2rem;
-            border: 4px solid #8B4513;
+            border: 4px solid #4a5568;
             box-shadow:
-                0 8px 0 #654321,
-                0 8px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+                0 8px 0 #2d3748,
+                0 8px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             position: relative;
         }
 
@@ -92,14 +93,14 @@
             left: 4px;
             right: 4px;
             bottom: 4px;
-            border: 2px solid rgba(139, 69, 19, 0.3);
+            border: 2px solid rgba(100, 116, 139, 0.3);
             border-radius: 16px;
             pointer-events: none;
         }
 
         .info-label {
             font-size: 0.9rem;
-            color: #654321;
+            color: #a0aec0;
             margin-bottom: 0.25rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -109,8 +110,8 @@
         .info-value {
             font-size: 2.2rem;
             font-weight: 900;
-            color: #2C1810;
-            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+            color: #e2e8f0;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
         }
 
         .score.positive {
@@ -122,27 +123,27 @@
         }
 
         .fretboard-container {
-            background: linear-gradient(135deg, #8B6F47 0%, #A0826D 100%);
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
             border-radius: 20px;
             padding: 2rem;
             margin-bottom: 2rem;
             overflow-x: auto;
-            border: 5px solid #654321;
+            border: 5px solid #4b5563;
             box-shadow:
-                0 10px 0 #4A2511,
-                0 10px 20px rgba(0, 0, 0, 0.4),
-                inset 0 3px 0 rgba(255, 255, 255, 0.3);
+                0 10px 0 #1f2937,
+                0 10px 20px rgba(0, 0, 0, 0.6),
+                inset 0 3px 0 rgba(255, 255, 255, 0.1);
         }
 
         .fretboard {
             position: relative;
-            background: linear-gradient(to right, #8B5A2B 0%, #A0826D 50%, #8B5A2B 100%);
+            background: linear-gradient(to right, #2d3748 0%, #4a5568 50%, #2d3748 100%);
             border-radius: 10px;
             padding: 20px;
             min-width: 900px;
             margin: 0 auto;
-            border: 3px solid #654321;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+            border: 3px solid #1a202c;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .strings-container {
@@ -272,6 +273,12 @@
             border: 3px solid #8B0000;
         }
 
+        .note-dot.detected {
+            background: rgba(200, 200, 200, 0.4);
+            border: 2px solid rgba(150, 150, 150, 0.5);
+            box-shadow: 0 0 10px rgba(200, 200, 200, 0.3);
+        }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.2); }
@@ -308,14 +315,14 @@
         }
 
         .speed-control {
-            background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             border-radius: 20px;
             padding: 1rem 2rem;
-            border: 4px solid #DAA520;
+            border: 4px solid #1a202c;
             box-shadow:
-                0 6px 0 #B8860B,
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+                0 6px 0 #0f1419,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -325,7 +332,7 @@
 
         .speed-label {
             font-size: 0.9rem;
-            color: #8B4513;
+            color: #a0aec0;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -369,14 +376,14 @@
         }
 
         .mode-toggle {
-            background: linear-gradient(135deg, #E6F3FF 0%, #B3D9FF 100%);
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             border-radius: 20px;
             padding: 1rem 2rem;
-            border: 4px solid #4682B4;
+            border: 4px solid #4a5568;
             box-shadow:
-                0 6px 0 #36648B,
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+                0 6px 0 #0f1419,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -384,7 +391,7 @@
 
         .toggle-label {
             font-size: 1rem;
-            color: #1E3A5F;
+            color: #e2e8f0;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -436,15 +443,77 @@
             font-weight: 600;
         }
 
-        .chord-selector {
-            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+        .game-mode-toggle {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             border-radius: 20px;
             padding: 1rem 2rem;
-            border: 4px solid #C71585;
+            border: 4px solid #1a202c;
             box-shadow:
-                0 6px 0 #8B1874,
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+                0 6px 0 #0f1419,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .game-mode-label {
+            font-size: 1rem;
+            color: #e2e8f0;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-mode-button {
+            position: relative;
+            width: 70px;
+            height: 35px;
+            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 3px solid #C71585;
+            box-shadow:
+                0 4px 0 #8B1874,
+                inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-mode-button.active {
+            background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
+            border-color: #4169E1;
+            box-shadow:
+                0 4px 0 #27408B,
+                inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-mode-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #FFF 0%, #F0F0F0 100%);
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow:
+                0 3px 0 #AAA,
+                0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .game-mode-button.active .game-mode-slider {
+            transform: translateX(35px);
+        }
+
+        .chord-selector {
+            background: linear-gradient(135deg, #553c9a 0%, #6b46c1 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #4c1d95;
+            box-shadow:
+                0 6px 0 #2e1065,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -452,9 +521,66 @@
             min-width: 200px;
         }
 
+        .chord-selector.hidden {
+            display: none;
+        }
+
+        .song-selector {
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #1e3a8a;
+            box-shadow:
+                0 6px 0 #172554,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .song-selector.active {
+            display: flex;
+        }
+
+        .song-label {
+            font-size: 0.9rem;
+            color: #bfdbfe;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .song-select {
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid #3b82f6;
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            color: #bfdbfe;
+            box-shadow:
+                0 4px 0 #1e3a8a,
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .song-select:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow:
+                0 4px 0 #27408B,
+                0 0 0 3px #FFD700,
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
         .chord-label {
             font-size: 0.9rem;
-            color: #4B0026;
+            color: #ddd6fe;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -464,15 +590,15 @@
             width: 100%;
             padding: 0.6rem;
             border-radius: 12px;
-            background: linear-gradient(135deg, #FFF 0%, #FFE4E1 100%);
-            border: 3px solid #C71585;
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f0a2e 100%);
+            border: 3px solid #7c3aed;
             font-size: 1rem;
             font-weight: 900;
             cursor: pointer;
-            color: #8B1874;
+            color: #ddd6fe;
             box-shadow:
-                0 4px 0 #8B1874,
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+                0 4px 0 #5b21b6,
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
             font-family: 'Comic Sans MS', cursive;
         }
 
@@ -485,27 +611,103 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
 
+        .metronome-toggle {
+            background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            border: 4px solid #312e81;
+            box-shadow:
+                0 6px 0 #1e1b4b,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .metronome-label {
+            font-size: 1rem;
+            color: #e0e7ff;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metronome-button {
+            position: relative;
+            width: 70px;
+            height: 35px;
+            background: linear-gradient(135deg, #CD5C5C 0%, #DC143C 100%);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 3px solid #8B0000;
+            box-shadow:
+                0 4px 0 #660000,
+                inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .metronome-button.active {
+            background: linear-gradient(135deg, #7FFF00 0%, #32CD32 100%);
+            border-color: #228B22;
+            box-shadow:
+                0 4px 0 #006400,
+                inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .metronome-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #FFF 0%, #F0F0F0 100%);
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow:
+                0 3px 0 #AAA,
+                0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .metronome-button.active .metronome-slider {
+            transform: translateX(35px);
+        }
+
         .game-canvas-container {
-            background: rgba(139, 90, 43, 0.2);
+            background: rgba(30, 41, 59, 0.5);
             border-radius: 10px;
             padding: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: none;
+            position: relative;
         }
 
         .game-canvas-container.active {
-            display: block;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #gameCanvas {
             width: 100%;
             max-width: 800px;
             height: 150px;
-            background: linear-gradient(to bottom, #4682B4 0%, #3CB371 60%, #654321 100%);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('assets/grass.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             border-radius: 8px;
             display: block;
             margin: 0 auto;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.2);
         }
 
         .title-screen {
@@ -514,7 +716,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #87CEEB 0%, #90EE90 50%, #FFD700 100%);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/splash.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -735,16 +940,17 @@
         }
 
         .timer-display {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             background: rgba(0, 0, 0, 0.7);
             padding: 1rem 2rem;
             border-radius: 15px;
             font-size: 2rem;
             font-weight: 700;
             color: white;
-            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
         }
 
         .timer-label {
@@ -911,25 +1117,27 @@
         }
 
         .plant-health-bar {
-            margin-top: 1rem;
-            text-align: center;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
         }
 
         .health-label {
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .health-bar-bg {
             width: 100%;
             max-width: 400px;
             height: 30px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 15px;
-            margin: 0 auto;
             overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .health-bar-fill {
@@ -943,12 +1151,12 @@
             font-size: 1.2rem;
             font-weight: 700;
             color: white;
-            margin-top: 0.5rem;
+            white-space: nowrap;
         }
 
         .start-button {
-            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
-            border: 4px solid #8B3A00;
+            background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+            border: 4px solid #312e81;
             color: white;
             padding: 1rem 2.5rem;
             font-size: 1.3rem;
@@ -959,26 +1167,26 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             box-shadow:
-                0 6px 0 #C44100,
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4);
-            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+                0 6px 0 #1e1b4b,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
         }
 
         .start-button:hover {
             transform: translateY(-3px);
             box-shadow:
-                0 9px 0 #C44100,
-                0 9px 20px rgba(0, 0, 0, 0.4),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+                0 9px 0 #1e1b4b,
+                0 9px 20px rgba(0, 0, 0, 0.6),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2);
         }
 
         .start-button:active {
             transform: translateY(3px);
             box-shadow:
-                0 3px 0 #C44100,
-                0 3px 10px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+                0 3px 0 #1e1b4b,
+                0 3px 10px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2);
         }
 
         .start-button:disabled {
@@ -988,19 +1196,19 @@
         }
 
         .start-button.active {
-            background: linear-gradient(135deg, #FF1493 0%, #FF69B4 100%);
-            border-color: #8B0045;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            border-color: #991b1b;
             box-shadow:
-                0 6px 0 #8B0045,
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+                0 6px 0 #7f1d1d,
+                0 6px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2);
         }
 
         .start-button.active:hover {
             box-shadow:
-                0 9px 0 #8B0045,
-                0 9px 20px rgba(0, 0, 0, 0.4),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+                0 9px 0 #7f1d1d,
+                0 9px 20px rgba(0, 0, 0, 0.6),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2);
         }
 
         .play-button {
@@ -1021,33 +1229,41 @@
 
         .status {
             font-size: 1.1rem;
-            color: #2C1810;
+            color: #fef3c7;
             font-weight: 700;
-            background: linear-gradient(135deg, #FFF9C4 0%, #FFEB3B 100%);
+            background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
             padding: 0.75rem 1.5rem;
             border-radius: 15px;
-            border: 3px solid #FFA000;
+            border: 3px solid #a16207;
             box-shadow:
-                0 4px 0 #FF6F00,
-                inset 0 2px 0 rgba(255, 255, 255, 0.5);
+                0 4px 0 #713f12,
+                inset 0 2px 0 rgba(255, 255, 255, 0.1);
             display: inline-block;
-            margin-top: 1rem;
+            margin: 0;
+            flex: 1;
+            text-align: center;
         }
 
         .feedback {
-            min-height: 30px;
-            font-size: 2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
             font-weight: 900;
-            margin-top: 1rem;
             text-transform: uppercase;
             letter-spacing: 3px;
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
         }
 
         .feedback.hit {
             color: #7FFF00;
             text-shadow:
                 3px 3px 0 #32CD32,
-                5px 5px 10px rgba(0, 0, 0, 0.5);
+                5px 5px 10px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(127, 255, 0, 0.8);
             animation: hit-bounce 0.3s ease-out;
         }
 
@@ -1055,7 +1271,8 @@
             color: #FF4500;
             text-shadow:
                 3px 3px 0 #DC143C,
-                5px 5px 10px rgba(0, 0, 0, 0.5);
+                5px 5px 10px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 69, 0, 0.8);
             animation: shake 0.3s ease-out;
         }
 
@@ -1072,35 +1289,110 @@
         }
 
         .song-info {
-            background: linear-gradient(135deg, #DDA0DD 0%, #DA70D6 100%);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            border: 4px solid #9932CC;
+            background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            margin-top: 0.5rem;
+            border: 3px solid #7e22ce;
             box-shadow:
-                0 6px 0 #8B008B,
-                0 6px 15px rgba(0, 0, 0, 0.3),
-                inset 0 2px 0 rgba(255, 255, 255, 0.4);
+                0 3px 0 #4c1d95,
+                0 3px 10px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            max-width: fit-content;
         }
 
         .song-title {
-            font-size: 1.3rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            color: #4B0082;
-            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #e9d5ff;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .song-pattern {
-            font-size: 1rem;
-            color: #8B008B;
-            font-weight: 700;
+            font-size: 0.75rem;
+            color: #ddd6fe;
+            font-weight: 600;
+        }
+
+        .countdown-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .countdown-overlay.active {
+            display: flex;
+        }
+
+        .countdown-number {
+            font-size: 15rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow:
+                5px 5px 0 #FF6B35,
+                10px 10px 0 #FF1493,
+                0 0 50px rgba(255, 215, 0, 0.8);
+            animation: countdown-pulse 1s ease-in-out;
+        }
+
+        @keyframes countdown-pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .countdown-go {
+            font-size: 12rem;
+            font-weight: 900;
+            color: #7FFF00;
+            text-shadow:
+                5px 5px 0 #32CD32,
+                10px 10px 0 #228B22,
+                0 0 50px rgba(127, 255, 0, 0.8);
+            animation: countdown-go 1s ease-out;
+        }
+
+        @keyframes countdown-go {
+            0% {
+                transform: scale(0.3) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.3) rotate(5deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="countdown-overlay" id="countdownOverlay">
+        <div class="countdown-number" id="countdownNumber">5</div>
+    </div>
+
     <div class="title-screen" id="titleScreen">
         <div class="title-logo">🎸 Plucky</div>
         <div class="title-subtitle">Strum. Match. Survive.</div>
@@ -1140,14 +1432,9 @@
 
     <button class="achievements-button" id="achievementsButton">🏆 Achievements</button>
 
-    <div class="timer-display" id="timerDisplay" style="display: none;">
-        <div class="timer-label">Time Left</div>
-        <div id="timerValue">2:00</div>
-    </div>
-
     <div class="container">
         <h1>🎸 Plucky</h1>
-        
+
         <div class="game-info">
             <div class="info-card">
                 <div class="info-label">Score</div>
@@ -1161,18 +1448,28 @@
                 <div class="info-label">Next Note</div>
                 <div class="info-value" id="nextNoteDisplay">-</div>
             </div>
+            <div class="status" id="status">Enable microphone to begin</div>
         </div>
 
         <div class="game-canvas-container" id="gameCanvasContainer">
-            <canvas id="gameCanvas" width="800" height="150"></canvas>
-            <div class="plant-health-bar">
-                <div class="health-label">Plant Health</div>
-                <div class="health-bar-bg">
-                    <div class="health-bar-fill" id="healthBarFill" style="width: 100%;"></div>
+            <div class="canvas-wrapper">
+                <div class="plant-health-bar">
+                    <div class="health-label">Plant Health:</div>
+                    <div class="health-bar-bg">
+                        <div class="health-bar-fill" id="healthBarFill" style="width: 100%;"></div>
+                    </div>
+                    <div class="health-value" id="healthValue">30 / 30</div>
                 </div>
-                <div class="health-value" id="healthValue">30 / 30</div>
+                <canvas id="gameCanvas" width="800" height="150"></canvas>
+                <div class="feedback" id="feedback"></div>
+            </div>
+            <div class="timer-display" id="timerDisplay" style="display: none;">
+                <div class="timer-label">Time Left</div>
+                <div id="timerValue">2:00</div>
             </div>
         </div>
+
+        <div class="practice-indicator" id="practiceIndicator" style="display: none;">Practice Mode: Take your time!</div>
 
         <div class="fretboard-container">
             <div class="fretboard" id="fretboard">
@@ -1183,7 +1480,14 @@
         <div class="control-panel">
             <button class="start-button" id="micButton">Enable Microphone</button>
             <button class="start-button play-button" id="playButton" disabled>Start Game</button>
-            <div class="chord-selector">
+            <div class="game-mode-toggle">
+                <span class="game-mode-label">Chord Mode</span>
+                <div class="game-mode-button active" id="gameModeButton">
+                    <div class="game-mode-slider"></div>
+                </div>
+                <span class="game-mode-label">Song Mode</span>
+            </div>
+            <div class="chord-selector hidden" id="chordSelector">
                 <div class="chord-label">Chord</div>
                 <select class="chord-select" id="chordSelect">
                     <option value="C">C Major</option>
@@ -1212,6 +1516,21 @@
                     <option value="Bm">B Minor</option>
                 </select>
             </div>
+            <div class="song-selector active" id="songSelector">
+                <div class="song-label">Song</div>
+                <select class="song-select" id="songSelect">
+                    <option value="default">Default (C-F-G-C)</option>
+                    <option value="pop1">Pop Progression I (C-G-Am-F)</option>
+                    <option value="pop2">Pop Progression II (G-D-Em-C)</option>
+                    <option value="classic">Classic Rock (G-C-D)</option>
+                    <option value="blues">12-Bar Blues (C-F-G)</option>
+                    <option value="ballad">Ballad (Am-F-C-G)</option>
+                    <option value="jazz">Jazz II-V-I (Dm-G-C)</option>
+                    <option value="folk">Folk (G-Em-C-D)</option>
+                    <option value="indie">Indie (Am-C-G-F)</option>
+                    <option value="pachelbel">Canon in D (D-A-Bm-F#m-G-D-G-A)</option>
+                </select>
+            </div>
             <div class="mode-toggle">
                 <span class="toggle-label">Practice Mode</span>
                 <div class="toggle-switch" id="practiceToggle">
@@ -1223,15 +1542,17 @@
                 <div class="speed-value" id="speedValue">120 BPM</div>
                 <input type="range" min="60" max="200" value="120" class="speed-slider" id="speedSlider">
             </div>
+            <div class="metronome-toggle">
+                <span class="metronome-label">🥁 Drum Beat</span>
+                <div class="metronome-button" id="metronomeButton">
+                    <div class="metronome-slider"></div>
+                </div>
+            </div>
         </div>
-        
-        <div class="status" id="status">Enable microphone to begin</div>
-        <div class="feedback" id="feedback"></div>
-        <div class="practice-indicator" id="practiceIndicator" style="display: none;">Practice Mode: Take your time!</div>
 
         <div class="song-info">
-            <div class="song-title" id="songTitle">Song: C Major Arpeggio</div>
-            <div class="song-pattern" id="songPattern">Pattern: C - E - G - C (repeating)</div>
+            <div class="song-title" id="songTitle">Song: Default (C-F-G-C)</div>
+            <div class="song-pattern" id="songPattern">Progression: C - F - G - C</div>
         </div>
     </div>
 
@@ -1399,8 +1720,58 @@
             ]
         };
 
+        // Song definitions - each song has chord progressions
+        const SONGS = {
+            'default': {
+                name: 'Default (C-F-G-C)',
+                chords: ['C', 'F', 'G', 'C']
+            },
+            'pop1': {
+                name: 'Pop Progression I (C-G-Am-F)',
+                chords: ['C', 'G', 'Am', 'F']
+            },
+            'pop2': {
+                name: 'Pop Progression II (G-D-Em-C)',
+                chords: ['G', 'D', 'Em', 'C']
+            },
+            'classic': {
+                name: 'Classic Rock (G-C-D)',
+                chords: ['G', 'C', 'D', 'G']
+            },
+            'blues': {
+                name: '12-Bar Blues (C-F-G)',
+                chords: ['C', 'C', 'C', 'C', 'F', 'F', 'C', 'C', 'G', 'F', 'C', 'G']
+            },
+            'ballad': {
+                name: 'Ballad (Am-F-C-G)',
+                chords: ['Am', 'F', 'C', 'G']
+            },
+            'jazz': {
+                name: 'Jazz II-V-I (Dm-G-C)',
+                chords: ['Dm', 'G', 'C', 'C']
+            },
+            'folk': {
+                name: 'Folk (G-Em-C-D)',
+                chords: ['G', 'Em', 'C', 'D']
+            },
+            'indie': {
+                name: 'Indie (Am-C-G-F)',
+                chords: ['Am', 'C', 'G', 'F']
+            },
+            'pachelbel': {
+                name: 'Canon in D (D-A-Bm-F#m-G-D-G-A)',
+                chords: ['D', 'A', 'Bm', 'F#m', 'G', 'D', 'G', 'A']
+            }
+        };
+
         let SONG_PATTERN = CHORD_PATTERNS['C']; // Default to C Major
         let currentChord = 'C';
+        let isSongMode = true; // Start in Song Mode by default
+        let currentSong = SONGS['default']; // Default song
+        let currentChordInSong = 0;
+        let notesPlayedInChord = 0;
+        const NOTES_PER_CHORD = 4; // Play 4 notes of each chord in the progression
+        let barHits = 0; // Track hits in current 4-note bar
 
         let BPM = 120;
         let NOTE_INTERVAL = (60 / BPM) * 1000; // ms per beat
@@ -1434,6 +1805,52 @@
         let gameTimer = null;
         let timeRemaining = 120; // 2 minutes in seconds
         const GAME_DURATION = 120;
+
+        // Plant image
+        let plantImage = new Image();
+        plantImage.src = 'assets/heroPlant.png';
+
+        // Zombie sprite sheet
+        let zombieSprite = new Image();
+        zombieSprite.src = 'assets/zombies.png';
+        const ZOMBIE_SPRITE_ROWS = 4;
+        const ZOMBIE_SPRITE_COLS = 4;
+        const ZOMBIE_TOTAL_FRAMES = 16;
+
+        // Explosion animation
+        let explosion10Images = []; // Regular explosions (Explosion_10 folder)
+        let explosion1Images = [];  // Special 4-streak explosions (Explosion_1 folder)
+        let explosion8Images = [];  // Plant damage explosions (Explosion_8 folder)
+        let explosions = [];
+        const EXPLOSION_FRAMES = 10;
+        const EXPLOSION_FRAME_DURATION = 3; // How many game loops per frame
+
+        // Preload Explosion_10 images (regular zombie deaths)
+        for (let i = 1; i <= EXPLOSION_FRAMES; i++) {
+            const img = new Image();
+            img.src = `assets/Explosion_10/Explosion_${i}.png`;
+            explosion10Images.push(img);
+        }
+
+        // Preload Explosion_1 images (special 4-streak multi-kills)
+        for (let i = 1; i <= EXPLOSION_FRAMES; i++) {
+            const img = new Image();
+            img.src = `assets/Explosion_1/Explosion_${i}.png`;
+            explosion1Images.push(img);
+        }
+
+        // Preload Explosion_8 images (plant damage)
+        for (let i = 1; i <= EXPLOSION_FRAMES; i++) {
+            const img = new Image();
+            img.src = `assets/Explosion_8/Explosion_${i}.png`;
+            explosion8Images.push(img);
+        }
+
+        // Metronome/Drum beat
+        let drumContext;
+        let drumEnabled = false;
+        let drumInterval = null;
+        let beatCount = 0;
 
         // Achievements - stored in localStorage
         let unlockedAchievements = JSON.parse(localStorage.getItem('pluckyAchievements') || '[]');
@@ -1475,6 +1892,13 @@
         const gameCanvasContainer = document.getElementById('gameCanvasContainer');
         const healthBarFill = document.getElementById('healthBarFill');
         const healthValue = document.getElementById('healthValue');
+        const metronomeButton = document.getElementById('metronomeButton');
+        const gameModeButton = document.getElementById('gameModeButton');
+        const chordSelector = document.getElementById('chordSelector');
+        const songSelector = document.getElementById('songSelector');
+        const songSelect = document.getElementById('songSelect');
+        const countdownOverlay = document.getElementById('countdownOverlay');
+        const countdownNumber = document.getElementById('countdownNumber');
 
         function getMIDINoteNumber(note, octave) {
             const noteIndex = noteStrings.indexOf(note);
@@ -1562,6 +1986,29 @@
             });
         }
 
+        function clearDetectedDots() {
+            Object.values(noteDots).forEach(dot => {
+                dot.element.classList.remove('detected');
+            });
+        }
+
+        function showDetectedNote(note, octave) {
+            // Clear previous detected dots
+            clearDetectedDots();
+
+            // Show detected note on all matching frets
+            Object.values(noteDots).forEach(dot => {
+                if (dot.note === note && dot.octave === octave) {
+                    // Don't override target/hit/miss states
+                    if (!dot.element.classList.contains('target') &&
+                        !dot.element.classList.contains('hit') &&
+                        !dot.element.classList.contains('miss')) {
+                        dot.element.classList.add('detected');
+                    }
+                }
+            });
+        }
+
         function showTargetNote(note, octave) {
             clearAllDots();
             Object.values(noteDots).forEach(dot => {
@@ -1628,14 +2075,20 @@
             ctx = canvas.getContext('2d');
         }
 
-        function spawnZombie() {
+        function spawnZombie(note, octave) {
+            // Randomly select one of the 16 zombie sprites
+            const randomZombieIndex = Math.floor(Math.random() * ZOMBIE_TOTAL_FRAMES);
+
             zombies.push({
                 x: canvas.width,
                 y: canvas.height / 2,
-                width: 30,
-                height: 40,
+                width: 60,  // 40 * 1.5
+                height: 75, // 50 * 1.5
                 speed: 0.5,
-                health: 1
+                health: 1,
+                note: note,
+                octave: octave,
+                spriteIndex: randomZombieIndex
             });
         }
 
@@ -1645,7 +2098,21 @@
                 y: canvas.height / 2,
                 width: 10,
                 height: 10,
-                speed: 3
+                speed: 3,
+                isSpecial: false,
+                killsRemaining: 1
+            });
+        }
+
+        function shootSpecialProjectile() {
+            projectiles.push({
+                x: 100,
+                y: canvas.height / 2,
+                width: 15,
+                height: 15,
+                speed: 4,
+                isSpecial: true,
+                killsRemaining: 4
             });
         }
 
@@ -1662,52 +2129,169 @@
         }
 
         function drawPlant() {
-            // Draw plant base (pot)
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(60, canvas.height / 2 + 10, 40, 20);
+            const plantWidth = 90;  // 60 * 1.5
+            const plantHeight = 90; // 60 * 1.5
+            const plantX = 50;
+            const plantY = canvas.height / 2 - 45; // Adjusted for new height
 
-            // Draw plant stem
-            ctx.fillStyle = '#228B22';
-            ctx.fillRect(75, canvas.height / 2 - 20, 10, 30);
+            // Save canvas state
+            ctx.save();
 
-            // Draw plant head (peashooter)
-            ctx.fillStyle = '#32CD32';
-            ctx.beginPath();
-            ctx.arc(80, canvas.height / 2 - 20, 15, 0, Math.PI * 2);
-            ctx.fill();
+            // Translate to plant position, flip horizontally, then translate back
+            ctx.translate(plantX + plantWidth, plantY);
+            ctx.scale(-1, 1);
 
-            // Draw mouth/shooter
-            ctx.fillStyle = '#006400';
-            ctx.fillRect(90, canvas.height / 2 - 25, 15, 10);
+            // Draw the flipped plant image
+            ctx.drawImage(
+                plantImage,
+                0,
+                0,
+                plantWidth,
+                plantHeight
+            );
+
+            // Restore canvas state
+            ctx.restore();
         }
 
         function drawZombie(zombie) {
-            // Draw zombie body
-            ctx.fillStyle = '#90EE90';
-            ctx.fillRect(zombie.x, zombie.y - 20, zombie.width, zombie.height);
+            // Calculate sprite sheet position based on zombie's assigned sprite index
+            const frameWidth = zombieSprite.width / ZOMBIE_SPRITE_COLS;
+            const frameHeight = zombieSprite.height / ZOMBIE_SPRITE_ROWS;
+            const col = zombie.spriteIndex % ZOMBIE_SPRITE_COLS;
+            const row = Math.floor(zombie.spriteIndex / ZOMBIE_SPRITE_COLS);
 
-            // Draw zombie head
-            ctx.fillStyle = '#9ACD32';
-            ctx.beginPath();
-            ctx.arc(zombie.x + zombie.width / 2, zombie.y - 25, 12, 0, Math.PI * 2);
-            ctx.fill();
+            // Save canvas state
+            ctx.save();
 
-            // Draw zombie eyes
-            ctx.fillStyle = '#FF0000';
-            ctx.fillRect(zombie.x + 8, zombie.y - 30, 4, 4);
-            ctx.fillRect(zombie.x + 18, zombie.y - 30, 4, 4);
+            // Translate to zombie position, flip horizontally
+            ctx.translate(zombie.x, zombie.y - zombie.height / 2);
+            ctx.scale(-1, 1);
+
+            // Draw zombie sprite (flipped)
+            ctx.drawImage(
+                zombieSprite,
+                col * frameWidth,
+                row * frameHeight,
+                frameWidth,
+                frameHeight,
+                -zombie.width, // Negative to account for flip
+                0,
+                zombie.width,
+                zombie.height
+            );
+
+            // Restore canvas state before drawing text
+            ctx.restore();
+
+            // Draw note label on top of zombie (10% higher)
+            if (zombie.note) {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 3;
+                ctx.font = 'bold 20px "Comic Sans MS", cursive';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const noteText = zombie.note;
+                const textX = zombie.x + zombie.width / 2;
+                const textY = zombie.y - zombie.height / 2 + 20 - (zombie.height * 0.1); // 10% higher
+
+                // Draw text outline (stroke)
+                ctx.strokeText(noteText, textX, textY);
+                // Draw text fill
+                ctx.fillText(noteText, textX, textY);
+            }
+        }
+
+        function createExplosion(x, y, type = 'regular') {
+            let images;
+            let size;
+
+            // Select explosion type
+            if (type === 'special') {
+                images = explosion1Images;
+                size = 120; // Larger for special multi-kill explosions
+            } else if (type === 'plant') {
+                images = explosion8Images;
+                size = 100; // Plant damage explosion
+            } else {
+                images = explosion10Images;
+                size = 80; // Regular zombie death
+            }
+
+            explosions.push({
+                x: x,
+                y: y,
+                frame: 0,
+                frameCounter: 0,
+                size: size,
+                images: images
+            });
+        }
+
+        function updateAndDrawExplosions() {
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                const explosion = explosions[i];
+
+                // Update frame
+                explosion.frameCounter++;
+                if (explosion.frameCounter >= EXPLOSION_FRAME_DURATION) {
+                    explosion.frameCounter = 0;
+                    explosion.frame++;
+
+                    // Remove explosion when animation is complete
+                    if (explosion.frame >= EXPLOSION_FRAMES) {
+                        explosions.splice(i, 1);
+                        continue;
+                    }
+                }
+
+                // Draw current explosion frame
+                if (explosion.frame < EXPLOSION_FRAMES) {
+                    const img = explosion.images[explosion.frame];
+                    ctx.drawImage(
+                        img,
+                        explosion.x - explosion.size / 2,
+                        explosion.y - explosion.size / 2,
+                        explosion.size,
+                        explosion.size
+                    );
+                }
+            }
         }
 
         function drawProjectile(projectile) {
-            ctx.fillStyle = '#90EE90';
-            ctx.beginPath();
-            ctx.arc(projectile.x, projectile.y, projectile.width / 2, 0, Math.PI * 2);
-            ctx.fill();
+            if (projectile.isSpecial) {
+                // Special projectile - golden/yellow with sparkle effect
+                ctx.fillStyle = '#FFD700';
+                ctx.beginPath();
+                ctx.arc(projectile.x, projectile.y, projectile.width / 2, 0, Math.PI * 2);
+                ctx.fill();
 
-            // Add glow effect
-            ctx.strokeStyle = '#32CD32';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+                // Add special glow effect
+                ctx.strokeStyle = '#FFA500';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Extra outer glow
+                ctx.strokeStyle = '#FFFF00';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(projectile.x, projectile.y, projectile.width / 2 + 2, 0, Math.PI * 2);
+                ctx.stroke();
+            } else {
+                // Normal projectile
+                ctx.fillStyle = '#90EE90';
+                ctx.beginPath();
+                ctx.arc(projectile.x, projectile.y, projectile.width / 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Add glow effect
+                ctx.strokeStyle = '#32CD32';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
         }
 
         function updateGame() {
@@ -1726,6 +2310,7 @@
 
                 // Check if zombie reached the plant
                 if (zombie.x < 110) {
+                    createExplosion(100, canvas.height / 2, 'plant');
                     updatePlantHealth(5);
                     zombies.splice(i, 1);
                     continue;
@@ -1746,27 +2331,37 @@
                 }
 
                 // Check collision with zombies
-                let hit = false;
+                let shouldRemoveProjectile = false;
                 for (let j = zombies.length - 1; j >= 0; j--) {
                     const zombie = zombies[j];
                     if (projectile.x + projectile.width > zombie.x &&
                         projectile.x < zombie.x + zombie.width &&
                         projectile.y + projectile.height > zombie.y - 20 &&
                         projectile.y < zombie.y + 20) {
-                        // Hit!
+                        // Hit! Create explosion at zombie's position
+                        const explosionType = projectile.isSpecial ? 'special' : 'regular';
+                        createExplosion(zombie.x + zombie.width / 2, zombie.y, explosionType);
                         zombies.splice(j, 1);
-                        hit = true;
-                        break;
+                        projectile.killsRemaining--;
+
+                        // Remove projectile if it has no kills remaining
+                        if (projectile.killsRemaining <= 0) {
+                            shouldRemoveProjectile = true;
+                            break;
+                        }
                     }
                 }
 
-                if (hit) {
+                if (shouldRemoveProjectile) {
                     projectiles.splice(i, 1);
                     continue;
                 }
 
                 drawProjectile(projectile);
             }
+
+            // Update and draw explosions
+            updateAndDrawExplosions();
 
             animationFrameId = requestAnimationFrame(updateGame);
         }
@@ -1777,6 +2372,7 @@
             updatePlantHealth(0); // Reset display
             zombies = [];
             projectiles = [];
+            explosions = [];
             updateGame();
         }
 
@@ -1798,10 +2394,31 @@
             showTargetNote(targetNote.note, targetNote.octave);
             nextNoteDisplay.textContent = `${targetNote.note}${targetNote.octave}`;
 
-            // Spawn a zombie for this note
-            spawnZombie();
+            // Spawn a zombie for this note with note label
+            spawnZombie(targetNote.note, targetNote.octave);
 
             currentNoteIndex = (currentNoteIndex + 1) % SONG_PATTERN.length;
+
+            // In song mode, check if we need to advance to next chord AFTER spawning the note
+            if (isSongMode && currentSong) {
+                notesPlayedInChord++;
+
+                // After playing 4 notes of current chord, move to next chord
+                if (notesPlayedInChord >= NOTES_PER_CHORD) {
+                    notesPlayedInChord = 0;
+                    barHits = 0; // Reset bar hits when changing chords
+                    currentChordInSong = (currentChordInSong + 1) % currentSong.chords.length;
+                    const nextChord = currentSong.chords[currentChordInSong];
+                    SONG_PATTERN = CHORD_PATTERNS[nextChord];
+                    currentChord = nextChord;
+                    currentNoteIndex = 0;
+
+                    // Update song info display
+                    const chordProgression = currentSong.chords.join(' - ');
+                    songTitle.textContent = `Song: ${currentSong.name}`;
+                    songPattern.textContent = `Progression: ${chordProgression} | Current: ${currentChord}`;
+                }
+            }
         }
 
         function checkNote(detectedNote, detectedOctave) {
@@ -1820,6 +2437,7 @@
                     updateStreak(false);
                     showFeedback('MISS!', 'miss');
                     currentTargetNote = null;
+                    barHits = 0; // Reset bar hits on miss
                     return;
                 }
             }
@@ -1830,11 +2448,22 @@
                 flashHit(detectedNote, detectedOctave);
                 updateScore(1);
                 updateStreak(true);
-                showFeedback('HIT! +1', 'hit');
                 currentTargetNote = null;
 
-                // Shoot projectile when note is hit
-                shootProjectile();
+                // Track bar hits
+                barHits++;
+
+                // Check if we completed a 4-note bar
+                if (barHits >= 4) {
+                    // Player hit all 4 notes in the bar! Shoot special projectile
+                    shootSpecialProjectile();
+                    showFeedback('PERFECT BAR! 🌟', 'hit');
+                    barHits = 0; // Reset for next bar
+                } else {
+                    // Normal hit
+                    showFeedback('HIT! +1', 'hit');
+                    shootProjectile();
+                }
 
                 // In practice mode, automatically show next note
                 if (isPracticeMode) {
@@ -1845,61 +2474,99 @@
             }
         }
 
+        function showCountdown(callback) {
+            countdownOverlay.classList.add('active');
+            let count = 5;
+
+            function updateCountdown() {
+                if (count > 0) {
+                    countdownNumber.textContent = count;
+                    countdownNumber.className = 'countdown-number';
+                    // Force reflow to restart animation
+                    void countdownNumber.offsetWidth;
+                    count--;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    countdownNumber.textContent = 'GO!';
+                    countdownNumber.className = 'countdown-go';
+                    setTimeout(() => {
+                        countdownOverlay.classList.remove('active');
+                        callback();
+                    }, 1000);
+                }
+            }
+
+            updateCountdown();
+        }
+
         function startGame() {
             if (isPlaying) return;
 
-            isPlaying = true;
-            score = 0;
-            streak = 0;
-            currentNoteIndex = 0;
-            currentTargetNote = null;
+            // Show countdown first
+            showCountdown(() => {
+                isPlaying = true;
+                score = 0;
+                streak = 0;
+                currentNoteIndex = 0;
+                currentTargetNote = null;
+                currentChordInSong = 0;
+                notesPlayedInChord = 0;
+                barHits = 0;
 
-            updateScore(0);
-            updateStreak(false);
+                // Set initial pattern based on mode
+                if (isSongMode && currentSong) {
+                    const firstChord = currentSong.chords[0];
+                    SONG_PATTERN = CHORD_PATTERNS[firstChord];
+                    currentChord = firstChord;
+                }
 
-            playButton.textContent = 'Stop Game';
-            playButton.classList.add('active');
+                updateScore(0);
+                updateStreak(false);
 
-            if (isPracticeMode) {
-                statusDisplay.textContent = 'Practice Mode: Take your time with each note!';
-                practiceIndicator.style.display = 'block';
-                speedSlider.disabled = true;
-                speedSlider.style.opacity = '0.5';
-            } else {
-                statusDisplay.textContent = 'Playing! Hit the notes!';
-                practiceIndicator.style.display = 'none';
-                // Start timer only in normal mode
-                startTimer();
-            }
+                playButton.textContent = 'Stop Game';
+                playButton.classList.add('active');
 
-            // Start game canvas
-            startGameCanvas();
+                if (isPracticeMode) {
+                    statusDisplay.textContent = 'Practice Mode: Take your time with each note!';
+                    practiceIndicator.style.display = 'block';
+                    speedSlider.disabled = true;
+                    speedSlider.style.opacity = '0.5';
+                } else {
+                    statusDisplay.textContent = 'Playing! Hit the notes!';
+                    practiceIndicator.style.display = 'none';
+                    // Start timer only in normal mode
+                    startTimer();
+                }
 
-            // Start the first note immediately
-            nextNote();
+                // Start game canvas
+                startGameCanvas();
 
-            // In practice mode, don't use interval - wait for user to hit each note
-            if (!isPracticeMode) {
-                // Set interval for subsequent notes
-                gameInterval = setInterval(() => {
-                    // Check if previous note was missed
-                    if (currentTargetNote) {
-                        const timeSinceNote = Date.now() - lastNoteTime;
-                        if (timeSinceNote > NOTE_INTERVAL + HIT_WINDOW) {
-                            flashMiss(currentTargetNote.note, currentTargetNote.octave);
-                            updateScore(-1);
-                            updateStreak(false);
-                            showFeedback('MISS!', 'miss');
-                            currentTargetNote = null;
+                // Start the first note immediately
+                nextNote();
+
+                // In practice mode, don't use interval - wait for user to hit each note
+                if (!isPracticeMode) {
+                    // Set interval for subsequent notes
+                    gameInterval = setInterval(() => {
+                        // Check if previous note was missed
+                        if (currentTargetNote) {
+                            const timeSinceNote = Date.now() - lastNoteTime;
+                            if (timeSinceNote > NOTE_INTERVAL + HIT_WINDOW) {
+                                flashMiss(currentTargetNote.note, currentTargetNote.octave);
+                                updateScore(-1);
+                                updateStreak(false);
+                                showFeedback('MISS!', 'miss');
+                                currentTargetNote = null;
+                            }
                         }
-                    }
 
-                    // Show next note if current one is cleared
-                    if (!currentTargetNote) {
-                        nextNote();
-                    }
-                }, NOTE_INTERVAL);
-            }
+                        // Show next note if current one is cleared
+                        if (!currentTargetNote) {
+                            nextNote();
+                        }
+                    }, NOTE_INTERVAL);
+                }
+            });
         }
 
         function stopGame(isWin = false) {
@@ -2074,6 +2741,142 @@
             timerDisplay.style.display = 'none';
         }
 
+        // Drum beat functions
+        function playKick() {
+            if (!drumContext) {
+                drumContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const osc = drumContext.createOscillator();
+            const gain = drumContext.createGain();
+
+            osc.connect(gain);
+            gain.connect(drumContext.destination);
+
+            // Kick drum sound: low frequency sweep
+            osc.frequency.setValueAtTime(150, drumContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(0.01, drumContext.currentTime + 0.5);
+
+            gain.gain.setValueAtTime(0.5, drumContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, drumContext.currentTime + 0.5);
+
+            osc.start(drumContext.currentTime);
+            osc.stop(drumContext.currentTime + 0.5);
+        }
+
+        function playSnare() {
+            if (!drumContext) {
+                drumContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const noise = drumContext.createBufferSource();
+            const noiseBuffer = drumContext.createBuffer(1, drumContext.sampleRate * 0.2, drumContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+
+            for (let i = 0; i < noiseBuffer.length; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            noise.buffer = noiseBuffer;
+
+            const noiseFilter = drumContext.createBiquadFilter();
+            noiseFilter.type = 'highpass';
+            noiseFilter.frequency.value = 1000;
+
+            const noiseGain = drumContext.createGain();
+            noiseGain.gain.setValueAtTime(0.35, drumContext.currentTime);
+            noiseGain.gain.exponentialRampToValueAtTime(0.01, drumContext.currentTime + 0.2);
+
+            noise.connect(noiseFilter);
+            noiseFilter.connect(noiseGain);
+            noiseGain.connect(drumContext.destination);
+
+            noise.start(drumContext.currentTime);
+            noise.stop(drumContext.currentTime + 0.2);
+        }
+
+        function playHiHat() {
+            if (!drumContext) {
+                drumContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const noise = drumContext.createBufferSource();
+            const noiseBuffer = drumContext.createBuffer(1, drumContext.sampleRate * 0.05, drumContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+
+            for (let i = 0; i < noiseBuffer.length; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+
+            noise.buffer = noiseBuffer;
+
+            const noiseFilter = drumContext.createBiquadFilter();
+            noiseFilter.type = 'highpass';
+            noiseFilter.frequency.value = 7000;
+
+            const noiseGain = drumContext.createGain();
+            noiseGain.gain.setValueAtTime(0.15, drumContext.currentTime);
+            noiseGain.gain.exponentialRampToValueAtTime(0.01, drumContext.currentTime + 0.05);
+
+            noise.connect(noiseFilter);
+            noiseFilter.connect(noiseGain);
+            noiseGain.connect(drumContext.destination);
+
+            noise.start(drumContext.currentTime);
+            noise.stop(drumContext.currentTime + 0.05);
+        }
+
+        function playDrumBeat() {
+            if (!drumEnabled) return;
+
+            // Simple rock beat pattern (4/4 time)
+            const beat = beatCount % 4;
+
+            if (beat === 0 || beat === 2) {
+                playKick();
+            }
+            if (beat === 1 || beat === 3) {
+                playSnare();
+            }
+            playHiHat(); // Hi-hat on every beat
+
+            beatCount++;
+        }
+
+        function startDrum() {
+            if (drumInterval) return;
+
+            beatCount = 0;
+            const beatDuration = (60 / BPM) * 1000; // ms per beat
+
+            // Play first beat immediately
+            playDrumBeat();
+
+            // Then continue with interval
+            drumInterval = setInterval(() => {
+                playDrumBeat();
+            }, beatDuration);
+        }
+
+        function stopDrum() {
+            if (drumInterval) {
+                clearInterval(drumInterval);
+                drumInterval = null;
+            }
+            beatCount = 0;
+        }
+
+        function toggleDrum() {
+            drumEnabled = !drumEnabled;
+            metronomeButton.classList.toggle('active');
+
+            if (drumEnabled) {
+                startDrum();
+            } else {
+                stopDrum();
+            }
+        }
+
         function frequencyToNote(frequency) {
             const noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
             const roundedNoteNum = Math.round(noteNum);
@@ -2145,13 +2948,19 @@
             if (frequency > 0 && frequency < 1000) {
                 const noteInfo = frequencyToNote(frequency);
                 const now = Date.now();
-                
+
+                // Always show detected note visually
+                showDetectedNote(noteInfo.note, noteInfo.octave);
+
                 // Only check note if it's different from last detected or enough time has passed
                 if ((noteInfo.note !== lastDetectedNote || now - lastDetectedTime > 100) && isPlaying) {
                     lastDetectedNote = noteInfo.note;
                     lastDetectedTime = now;
                     checkNote(noteInfo.note, noteInfo.octave);
                 }
+            } else {
+                // Clear detected dots when no valid frequency detected
+                clearDetectedDots();
             }
 
             if (isListening) {
@@ -2214,6 +3023,13 @@
             BPM = parseInt(e.target.value);
             NOTE_INTERVAL = (60 / BPM) * 1000;
             speedValue.textContent = `${BPM} BPM`;
+
+            // Restart drum with new tempo if it's enabled
+            if (drumEnabled) {
+                stopDrum();
+                drumEnabled = true; // Keep it enabled
+                startDrum();
+            }
 
             // If game is currently playing, restart it with new tempo
             if (isPlaying && !isPracticeMode) {
@@ -2294,6 +3110,58 @@
 
         closeAchievements.addEventListener('click', () => {
             hideAchievements();
+        });
+
+        metronomeButton.addEventListener('click', () => {
+            toggleDrum();
+        });
+
+        gameModeButton.addEventListener('click', () => {
+            if (isPlaying) {
+                return; // Don't allow toggle during gameplay
+            }
+
+            isSongMode = !isSongMode;
+            gameModeButton.classList.toggle('active');
+
+            if (isSongMode) {
+                // Switch to Song Mode
+                chordSelector.classList.add('hidden');
+                songSelector.classList.add('active');
+
+                // Set default song
+                currentSong = SONGS['default'];
+                const chordProgression = currentSong.chords.join(' - ');
+                songTitle.textContent = `Song: ${currentSong.name}`;
+                songPattern.textContent = `Progression: ${chordProgression}`;
+                statusDisplay.textContent = 'Song Mode enabled - Play through chord progressions!';
+            } else {
+                // Switch to Chord Mode
+                chordSelector.classList.remove('hidden');
+                songSelector.classList.remove('active');
+
+                currentSong = null;
+                const chordName = chordSelect.options[chordSelect.selectedIndex].text;
+                songTitle.textContent = `Song: ${chordName} Arpeggio`;
+                const patternStr = SONG_PATTERN.map(n => `${n.note}${n.octave}`).join(' - ');
+                songPattern.textContent = `Pattern: ${patternStr} (repeating)`;
+                statusDisplay.textContent = 'Chord Mode enabled - Play a single chord repeatedly!';
+            }
+        });
+
+        songSelect.addEventListener('change', (e) => {
+            if (isPlaying) {
+                return; // Don't allow change during gameplay
+            }
+
+            const songKey = e.target.value;
+            currentSong = SONGS[songKey];
+
+            // Update song info display
+            const chordProgression = currentSong.chords.join(' - ');
+            songTitle.textContent = `Song: ${currentSong.name}`;
+            songPattern.textContent = `Progression: ${chordProgression}`;
+            statusDisplay.textContent = `Song changed to ${currentSong.name}`;
         });
 
         initCanvas();
